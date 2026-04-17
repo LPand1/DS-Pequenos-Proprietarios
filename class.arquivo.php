@@ -4,13 +4,13 @@ Class Arquivo implements JsonSerializable {
     private $nome;
     private $path;
 
-    function getId() { return $this->id; }
-    function setNome($n) { $this->nome = $n; }
-    function getNome() { return $this->nome; }
-    function setPath($p) { $this->path = $p; }
-    function getPath() { return $this->path; }
+    public function getId() { return $this->id; }
+    public function setNome($n) { $this->nome = $n; }
+    public function getNome() { return $this->nome; }
+    public function setPath($p) { $this->path = $p; }
+    public function getPath() { return $this->path; }
 
-    function jsonSerialize() {
+    public function jsonSerialize() : mixed  {
         return [
             'id' => $this->id,
             'nome' => $this->nome,

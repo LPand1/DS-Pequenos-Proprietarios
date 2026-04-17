@@ -14,10 +14,10 @@ CREATE TABLE usuarios (
 
 CREATE TABLE proprietarios (
     id INT NOT NULL AUTO_INCREMENT,
-    nome INT NOT NULL AUTO_INCREMENT,
+    nome VARCHAR(255) NOT NULL AUTO_INCREMENT,
     usuario_id INT NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 
 CREATE TABLE inquilinos (
@@ -27,7 +27,7 @@ CREATE TABLE inquilinos (
     usuario_id INT NOT NULL,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 
 CREATE TABLE propriedades (
