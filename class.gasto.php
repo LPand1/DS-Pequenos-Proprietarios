@@ -13,7 +13,7 @@ Class Gasto implements JsonSerializable {
     public function getData() { return $this->data; }
     public function setTotal($t) { $this->total = $t; }
     public function getTotal() { return $this->total; }
-    public function setPropriedadedId($pId) { $this->propriedadeId = $pId; }
+    public function setPropriedadeId($pId) { $this->propriedadeId = $pId; }
     public function getPropriedadeId() { return $this->propriedadeId; }
 
     public function jsonSerialize() : mixed {
