@@ -8,19 +8,21 @@ Class Propriedade implements JsonSerializable {
     private $descricao;
     private $aluguel;
 
-    function getId() { return $this->id; }
-    function getProprietarioId() { return $this->proprietarioId; }
-    function getInquilinoId() { return $this->inquilinoId; }
-    function setEndereco($e) { $this->endereco = $e; }
-    function getEndereco() { return $this->endereco; }
-    function setTipo($t) { $this->tipo = $t; }
-    function getTipo() { return $this->id; }
-    function setDescricao($d) { $this->descricao = $d; }
-    function getDescricao() { return $this->id; }
-    function setAluguel($a) { $this->aluguel = $a; }
-    function getAluguel() { return $this->aluguel; }
+    public function getId() { return $this->id; }
+    public function setProprietarioId($pId) { $this->proprietarioId = $pId; }
+    public function getProprietarioId() { return $this->proprietarioId; }
+    public function setInquilinoId($iId) { $this->inquilinoId = $iId; }
+    public function getInquilinoId() { return $this->inquilinoId; }
+    public function setEndereco($e) { $this->endereco = $e; }
+    public function getEndereco() { return $this->endereco; }
+    public function setTipo($t) { $this->tipo = $t; }
+    public function getTipo() { return $this->id; }
+    public function setDescricao($d) { $this->descricao = $d; }
+    public function getDescricao() { return $this->id; }
+    public function setAluguel($a) { $this->aluguel = $a; }
+    public function getAluguel() { return $this->aluguel; }
 
-    function jsonSerialize() {
+    public function jsonSerialize() : mixed {
         return [
             'id' => $this->id,
             'proprietarioId' => $this->id,

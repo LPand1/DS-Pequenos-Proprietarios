@@ -6,16 +6,17 @@ Class Gasto implements JsonSerializable {
     private $total;
     private $propriedadeId;
 
-    function getId() { return $this->id; }
-    function setValor($v) { $this->valor = $v; }
-    function getValor() { return $this->valor; }
-    function setData($d) { $this->data = $d; }
-    function getData() { return $this->data; }
-    function setTotal($t) { $this->total = $t; }
-    function getTotal() { return $this->total; }
-    function getPropriedadeId() { return $this->propriedadeId; }
+    public function getId() { return $this->id; }
+    public function setValor($v) { $this->valor = $v; }
+    public function getValor() { return $this->valor; }
+    public function setData($d) { $this->data = $d; }
+    public function getData() { return $this->data; }
+    public function setTotal($t) { $this->total = $t; }
+    public function getTotal() { return $this->total; }
+    public function setPropriedadedId($pId) { $this->propriedadeId = $pId; }
+    public function getPropriedadeId() { return $this->propriedadeId; }
 
-    function jsonSerialize() {
+    public function jsonSerialize() : mixed {
         return [
             'id' => $this->id,
             'valor' => $this->valor,
