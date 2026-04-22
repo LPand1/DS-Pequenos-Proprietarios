@@ -22,15 +22,15 @@ Class PropriedadeDAO {
         else { return $dados; }
     }
 
-    public function inserir() {
+    public function inserir(Propriedade $propriedade) {
         $sql = $this->pdo->prepare("INSERT INTO propriedades (proprietarioId, inquilinoId, endereco, tipo, descricao, aluguel) VALUES (:proprietarioId, :inquilinoId, :endereco, :tipo, :descricao, :aluguel)");
         $sql->execute([
-            ':proprietarioId' => $this->proprietarioId,
-            ':inquilinoId' => $this->inquilinoId,
-            ':endereco' => $this->endereco,
-            ':tipo' => $this->tipo,
-            ':descricao' => $this->descricao,
-            ':aluguel' => $this->aluguel,
+            ':proprietarioId' => $propriedade->getProprietarioId(),
+            ':inquilinoId' => $propriedade->getInquilinoId(),
+            ':endereco' => $propriedade->getEndereco(),
+            ':tipo' => $propriedade->getTipo(),
+            ':descricao' => $propriedade->getDescricao(),
+            ':aluguel' => $propriedade->getAluguel(),
         ]);
         $dados = $sql->fetch();
         if (!$dados) { return null; }

@@ -1,5 +1,5 @@
 <?php
-Class Proprietario {
+Class ProprietarioDAO {
     private PDO $pdo;
     
     public function __construct() {
