@@ -1,0 +1,3 @@
+﻿# DS-Pequenos-Proprietarios
+
+Este projeto procura desenvolver uma plataforma que resolva a dificuldade encontrada por pequenos proprietários no gerenciamento de suas propriedades. 
