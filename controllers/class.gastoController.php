@@ -1,5 +1,5 @@
 <?php
-Class GastroController {
+Class GastoController {
     private $gastoDAO;
 
     public function __construct() {
