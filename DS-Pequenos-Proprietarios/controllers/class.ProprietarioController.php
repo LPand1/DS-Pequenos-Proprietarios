@@ -7,7 +7,7 @@ Class ProprietarioController {
     }
 
     public function buscarTodos() {
-        $dados = $this->proprietarioDAO->buscarTodos();
+        /*$dados = $this->proprietarioDAO->buscarTodos();
 
         if (!$dados) {
             http_response_code(200);
@@ -16,11 +16,13 @@ Class ProprietarioController {
         } else {
             http_response_code(200);
             echo json_encode($dados);
-        }
+        }*/
+
+        return $this->proprietarioDAO->buscarTodos();
     }
 
     public function buscarId($id) {
-        if (!$id || !is_numeric($id)) {
+        /*if (!$id || !is_numeric($id)) {
             http_response_code(404);
             echo json_encode(['erro' => 'ID inválido']);
             return;
@@ -35,11 +37,13 @@ Class ProprietarioController {
         }
 
         http_response_code(200);
-        echo json_encode($dados);
+        echo json_encode($dados);*/
+
+        return $this->proprietarioDAO->buscarId($id);
     }
 
-     public function inserir() {
-        $body = json_decode(file_get_contents('php://input'), true);
+     public function inserir($n, $ui) {
+        /*$body = json_decode(file_get_contents('php://input'), true);
 
         if (!isset($body['nome']) || !isset($body['usuarioId'])) {
             http_response_code(400);
@@ -60,11 +64,13 @@ Class ProprietarioController {
         }
 
         http_response_code(201);
-        echo json_encode(['mensagem' => 'Proprietario inserido com sucesso']);
+        echo json_encode(['mensagem' => 'Proprietario inserido com sucesso']);*/
+
+        return $this->proprietarioDAO->inserir($n, $ui);
     }
     
     public function excluirId($id) {
-        if (!$id || !is_numeric($id)) {
+        /*if (!$id || !is_numeric($id)) {
             http_response_code(400);
             echo json_encode(['erro' => 'ID inválido']);
             return;
@@ -81,7 +87,9 @@ Class ProprietarioController {
         $this->proprietarioDAO->excluirId($id);
 
         http_response_code(200);
-        echo json_encode(['mensagem' => 'Proprietario excluído com sucesso']);
+        echo json_encode(['mensagem' => 'Proprietario excluído com sucesso']);*/
+
+        return $this->proprietarioDAO->excluirId($id);
     }
 }
 

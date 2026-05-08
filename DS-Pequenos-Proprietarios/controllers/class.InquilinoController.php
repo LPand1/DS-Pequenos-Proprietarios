@@ -7,7 +7,7 @@ class InquilinoController {
     }
 
     public function buscarTodos() {
-        $dados = $this->inquilinoDAO->buscarTodos();
+        /*$dados = $this->inquilinoDAO->buscarTodos();
 
         if (!$dados) {
             http_response_code(200);
@@ -16,11 +16,13 @@ class InquilinoController {
         } else {
             http_response_code(200);
             echo json_encode($dados);
-        }
+        }*/
+
+        return $this->inquilinoDAO->buscarTodos();
     }
 
     public function buscarId($id) {
-        if (!$id || !is_numeric($id)) {
+        /*if (!$id || !is_numeric($id)) {
             http_response_code(404);
             echo json_encode(['erro' => 'ID inválido']);
             return;
@@ -35,11 +37,13 @@ class InquilinoController {
         }
 
         http_response_code(200);
-        echo json_encode($dados);
+        echo json_encode($dados);*/
+
+        return $this->inquilinoDAO->buscarId($id);
     }
 
-     public function inserir() {
-        $body = json_decode(file_get_contents('php://input'), true);
+     public function inserir($n, $e, $ui) {
+        /*$body = json_decode(file_get_contents('php://input'), true);
 
         if (!isset($body['nome']) || !isset($body['email']) || !isset($body['usuarioId'])) {
             http_response_code(400);
@@ -61,11 +65,13 @@ class InquilinoController {
         }
 
         http_response_code(201);
-        echo json_encode(['mensagem' => 'Inquilino inserido com sucesso']);
+        echo json_encode(['mensagem' => 'Inquilino inserido com sucesso']);*/
+
+        return $this->inquilinoDAO->inserir($n, $e, $ui);
     }
     
     public function excluirId($id) {
-        if (!$id || !is_numeric($id)) {
+        /*if (!$id || !is_numeric($id)) {
             http_response_code(400);
             echo json_encode(['erro' => 'ID inválido']);
             return;
@@ -82,7 +88,9 @@ class InquilinoController {
         $this->inquilinoDAO->excluirId($id);
 
         http_response_code(200);
-        echo json_encode(['mensagem' => 'Inquilino excluído com sucesso']);
+        echo json_encode(['mensagem' => 'Inquilino excluído com sucesso']);*/
+
+        return $this->inquilinoDAO->excluirId($id);
     }
 }
 

@@ -7,7 +7,7 @@ Class PropriedadeController {
     }
 
     public function buscarTodos() {
-        $dados = $this->propriedadeDAO->buscarTodos();
+        /*$dados = $this->propriedadeDAO->buscarTodos();
 
         if (!$dados) {
             http_response_code(200);
@@ -16,11 +16,13 @@ Class PropriedadeController {
         } else {
             http_response_code(200);
             echo json_encode($dados);
-        }
+        }*/
+
+        return $this->propriedadeDAO->buscarTodos();
     }
 
     public function buscarId($id) {
-        if (!$id || !is_numeric($id)) {
+        /*if (!$id || !is_numeric($id)) {
             http_response_code(404);
             echo json_encode(['erro' => 'ID inválido']);
             return;
@@ -35,11 +37,13 @@ Class PropriedadeController {
         }
 
         http_response_code(200);
-        echo json_encode($dados);
+        echo json_encode($dados);*/
+
+        return $this->propriedadeDAO->buscarId($id);
     }
 
-     public function inserir() {
-        $body = json_decode(file_get_contents('php://input'), true);
+     public function inserir($pi, $ii, $e, $t, $d, $a) {
+        /*$body = json_decode(file_get_contents('php://input'), true);
 
         if (!isset($body['proprietarioId']) || !isset($body['inquilinoId']) || !isset($body['endereco'])) {
             http_response_code(400);
@@ -64,11 +68,13 @@ Class PropriedadeController {
         }
 
         http_response_code(201);
-        echo json_encode(['mensagem' => 'Propriedade inserida com sucesso']);
+        echo json_encode(['mensagem' => 'Propriedade inserida com sucesso']);*/
+
+        return $this->propriedadeDAO->inserir($pi, $ii, $e, $t, $d, $a);
     }
     
     public function excluirId($id) {
-        if (!$id || !is_numeric($id)) {
+        /*if (!$id || !is_numeric($id)) {
             http_response_code(400);
             echo json_encode(['erro' => 'ID inválido']);
             return;
@@ -85,7 +91,9 @@ Class PropriedadeController {
         $this->propriedadeDAO->excluirId($id);
 
         http_response_code(200);
-        echo json_encode(['mensagem' => 'Propriedade excluída com sucesso']);
+        echo json_encode(['mensagem' => 'Propriedade excluída com sucesso']);*/
+
+        return $this->propriedadeDAO->excluirId($id);
     }
 }
 

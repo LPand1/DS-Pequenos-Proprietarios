@@ -7,7 +7,7 @@ Class UsuarioController {
     }
 
     public function buscarTodos() {
-        $dados = $this->usuarioDAO->buscarTodos();
+        /*$dados = $this->usuarioDAO->buscarTodos();
 
         if (!$dados) {
             http_response_code(200);
@@ -16,11 +16,13 @@ Class UsuarioController {
         } else {
             http_response_code(200);
             echo json_encode($dados);
-        }
+        }*/
+        
+        return $this->usuarioDAO->buscarTodos();
     }
 
     public function buscarId($id) {
-        if (!$id || !is_numeric($id)) {
+        /*if (!$id || !is_numeric($id)) {
             http_response_code(404);
             echo json_encode(['erro' => 'ID inválido']);
             return;
@@ -35,11 +37,13 @@ Class UsuarioController {
         }
 
         http_response_code(200);
-        echo json_encode($dados);
+        echo json_encode($dados);*/
+
+        return $this->usuarioDAO->buscarId($id);
     }
 
-    public function inserir() {
-        $body = json_decode(file_get_contents('php://input'), true);
+    public function inserir($senha, $cpf) {
+        /*$body = json_decode(file_get_contents('php://input'), true);
 
         if (!isset($body['senha']) || !isset($body['cpf'])) {
             http_response_code(404);
@@ -60,11 +64,13 @@ Class UsuarioController {
         }
 
         http_response_code(201);
-        echo json_encode(['mensagem' => 'Usuário inserido com sucesso']);
+        echo json_encode(['mensagem' => 'Usuário inserido com sucesso']);*/
+
+        return $this->usuarioDAO->inserir($senha, $cpf);
     }
 
     public function excluirId($id) {
-        if (!$id || !is_numeric($id)) {
+        /*if (!$id || !is_numeric($id)) {
             http_response_code(400);
             echo json_encode(['erro' => 'ID inválido']);
             return;
@@ -81,7 +87,9 @@ Class UsuarioController {
         $this->usuarioDAO->excluirId($id);
 
         http_response_code(200);
-        echo json_encode(['mensagem' => 'Usuário excluído com sucesso']);
+        echo json_encode(['mensagem' => 'Usuário excluído com sucesso']);*/
+
+        return $this->usuarioDAO->excluirId($id);
     }
 }
 
