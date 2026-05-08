@@ -6,41 +6,67 @@ Class UsuarioDAO {
         $this->pdo = Banco::getConexao();
     }
 
+    private function mapTask(array $dados) : Usuario {
+        $usuario = new Usuario();
+
+        $usuario->setId($data['id']);
+        $usuario->setSenha($data['senha']);
+        $usuario->setCpf($data['cpf']);
+
+        return $usuario;
+    }
+    
     public function buscarId($id) {
         $sql = $this->pdo->prepare("SELECT * FROM usuarios WHERE id = :id");
         $sql->execute([':id' => $id]);
-        $dados = $sql->fetch();
+        $dados = $sql->fetch(PDO::FETCH_ASSOC);
         if (!$dados) { return null; }
-        else { return $dados; }
+        else { return $this->mapTask($dados); }
     }
 
     public function buscarTodos() {
-        $sql = "SELECT * FROM usuarios";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute();
-        $dados = $stmt->fetchAll();
-        if (!$dados) { return null; }
-        else { return $dados; }
+        $sql = $this->pdo->prepare("SELECT * FROM usuarios");
+        $sql->execute();
+        $dados = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+        $usuarios = [];
+
+        foreach($usuarios as $u) {
+            $usuarios[] = $this->mapTask[$u];
+        }
+
+        if (!$usuarios) { return null; }
+        else { return $usuarios; }
     }
 
-    public function inserir(Usuario $usuario) {
-        $sql = "INSERT INTO usuarios (senha, cpf) VALUES (:senha, :cpf)";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([
-            ':senha' => $usuario->getSenha(),
-            ':cpf' => $usuario->getCpf(),
+    public function inserir($senha, $cpf) {
+        $sql = $this->pdo->prepare("INSERT INTO usuarios (senha, cpf) VALUES (:senha, :cpf)");
+        $sql->execute([
+            ':senha' => $senha,
+            ':cpf' => $cpf,
         ]);
-        $dados = $stmt->fetchAll();
-        if (!$dados) { return null; }
-        else { return $dados; }
+        
+        $id = $this->pdo->lastInsertId();
+
+        return $this->getId($id);
+    }
+
+    public function alterar($id, $senha, $cpf) {
+        $sql = $this->pdo->prepare("UPDATE usuarios SET (senha=:senha, cpf=:cpf)");
+        $sql->execute([
+            ':id' => $id,
+            ':senha' => $senha,
+            ':cpf' => $cpf,
+        ]);
+        
+        return ['sucesso' => true];
     }
 
     public function excluirId($id) {
         $sql = $this->pdo->prepare("DELETE FROM usuario WHERE id = :id");
         $sql->execute([':id' => $id]);
-        $dados = $sql->fetch();
-        if (!$dados) { return null; }
-        else { return $dados; }
+        
+        return ['sucesso' => true];
     }
 }
 

@@ -6,40 +6,70 @@ Class ProprietarioDAO {
         $this->pdo = Banco::getConexao();
     }
 
+    private function mapTask(array $dados) : Proprietario {
+        $proprietario = new Proprietario();
+
+        $proprietario->setId($data['id']);
+        $proprietario->setNome($data['nome']);
+        $proprietario->setUsuarioId($data['usuario_id']);
+
+        return $proprietario;
+    }
+
     public function buscarId($id) {
-        $sql = "SELECT * FROM proprietarios WHERE id = :id";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':id' => $id]);
-        $dados = $stmt->fetch();
+        $sql = $this->pdo->prepare("SELECT * FROM proprietarios WHERE id = :id");
+        $sql->execute([':id' => $id]);
+        $dados = $sql->fetch(PDO::FETCH_ASSOC);
         if (!$dados) { return null; }
-        else { return $dados; }
+        else { return $this->mapTask($dados); }
     }
 
     public function buscarTodos() {
         $sql = $this->pdo->prepare("SELECT * FROM proprietarios");
         $sql->execute();
         $dados = $sql->fetchAll();    
-        if (!$dados) { return null; }
-        else { return $dados; }
+        
+        $proprietarios = [];
+
+        foreach($proprietarios as $p) {
+            $proprietarios[] = $this->mapTask[$d]
+        }
+
+        if (!$proprietarios) { return $null; }
+        else { return $proprietarios; }
     }
 
-    public function inserir(Proprietario $proprietario) {
-        $sql = $this->pdo->prepare("INSERT INTO proprietarios (nome, usuario_id) VALUES (:nome, :usuario_id)");
+    public function inserir($n, $ui) {
+        $sql = $this->pdo->prepare("INSERT INTO proprietarios (nome, usuario_id) VALUES (:nome, :usuarioId)");
         $sql->execute([
-            'nome' => $proprietario->getNome(),
-            'usuario_id' => $proprietario->getUsuarioId(),
+            ':nome' => $n,
+            ':usuarioId' => $ui,
         ]);
-        $dados = $sql->fetch();
-        if (!$dados) { return null; }
-        else { return $dados; }
+        
+        $id = $this->pdo->lastInsertId();
+
+        return $this->getId($id);
+    }
+
+    public function alterar($n, $ui) {
+        $sql = $this->pdo->prepare("UPDATE proprietarios SET (nome=:nome, usuario_id=:usuarioId)");
+        $sql->execute([
+            ':nome' => $n,
+            ':usuarioId' => $ui,
+        ]);
+
+        return [
+            'sucesso' => true,
+        ]
     }
 
     public function excluirId($id) {
         $sql = $this->pdo->prepare("DELETE FROM proprietarios WHERE id = :id");
         $sql->execute([':id' => $id]);
-        $dados = $sql->fetch();
-        if (!$dados) { return null; }
-        else { return $dados; }
+        
+        return [
+            'sucesso' => true,
+        ]
     }
 }
 

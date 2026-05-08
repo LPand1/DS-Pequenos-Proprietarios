@@ -3,7 +3,8 @@ Class Proprietario implements JsonSerializable {
     private $id;
     private $nome;
     private $usuarioId;
-    
+
+    public function setId($id) { $this->id = $id; }
     public function getId() { return $this->id; }
     public function setNome($n) { $this->nome = $n; }
     public function getNome() { return $this->nome; }

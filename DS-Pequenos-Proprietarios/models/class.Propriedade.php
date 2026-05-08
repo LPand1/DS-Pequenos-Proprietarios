@@ -8,6 +8,7 @@ Class Propriedade implements JsonSerializable {
     private $descricao;
     private $aluguel;
 
+    public function setId($id) { $this->id = $id; }
     public function getId() { return $this->id; }
     public function setProprietarioId($pId) { $this->proprietarioId = $pId; }
     public function getProprietarioId() { return $this->proprietarioId; }

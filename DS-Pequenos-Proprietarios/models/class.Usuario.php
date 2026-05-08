@@ -4,6 +4,7 @@ Class Usuario implements jsonSerializable {
     private $senha;
     private $cpf;
 
+    public function setId($id) { $this->id = $id; } 
     public function getId() { return $this->id; }
     public function setSenha($s) { $this->senha = $s; }
     public function getSenha() { return $this->senha; }
