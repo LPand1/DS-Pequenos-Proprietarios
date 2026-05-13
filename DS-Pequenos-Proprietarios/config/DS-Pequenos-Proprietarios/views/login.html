@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body class="bg-gray-200 flex flex-col items-center">
+    <!-- Cabeçalho da página -->
+    <div class="bg-blue-800 w-full h-24 flex justify-between shadow-lg">
+      <span class="text-4xl text-white font-mono font-bold pl-4 pt-6 uppercase">gerenciador de imóveis</span>
+    </div>
+
+    <!-- Quadro principal -->
+    <div class="flex bg-blue-800 w-140 h-120 mt-20 rounded-lg flex-col justify-center">
+
+      <div class="text-4xl text-white font-mono font-bold uppercase pl-29 pb-15 ">Entre no sistema!</div>
+      <div class="flex justify-center ">
+        <form action="" method="POST">
+          <label for="nome" class="text-2xl text-white font-mono font-bold uppercase">Usuário</label>
+          <br> 
+          <input type="text" name="usuario" class="text-2xl text-white font-mono font-bold uppercase bg-blue-900 rounded-md text-align-center hover:contrast-80">
+          <br>
+          <label for="nome" class="text-2xl text-white font-mono font-bold uppercase">Senha</label>
+          <br>
+          <input type="password" name="senha" class="text-2xl text-white font-mono font-bold uppercase bg-blue-900 rounded-md hover:contrast-80">          
+          <br><br>
+          <button type="submit" class="text-2xl text-white font-mono font-bold uppercase bg-blue-900 rounded-md ml-5 pl-20 pr-20 hover:contrast-80">Entrar</button>
+        </form>
+      </div>
+    </div>
+
+  <script src="utils.js"></script>
+  <script src="login.js"></script>
+  </body>
+</html>
