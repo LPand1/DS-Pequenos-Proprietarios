@@ -18,7 +18,7 @@ CREATE TABLE usuarios (
 
 CREATE TABLE proprietarios (
     id INT NOT NULL AUTO_INCREMENT,
-    nome VARCHAR(255) NOT NULL AUTO_INCREMENT,
+    nome VARCHAR(255) NOT NULL,
     usuario_id INT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
@@ -36,8 +36,8 @@ CREATE TABLE inquilinos (
 
 CREATE TABLE propriedades (
     id INT NOT NULL AUTO_INCREMENT,
-    proprietario_id NOT NULL,
-    inquilino_id NOT NULL,
+    proprietario_id INT NOT NULL,
+    inquilino_id INT NOT NULL,
     endereco VARCHAR(255) NOT NULL,
     tipo INT NOT NULL,
     descricao VARCHAR(255) NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE gastos (
     total FLOAT NOT NULL,
     propriedade_id INT NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (propriedade_id) REFERENCES propriedades(id),
+    FOREIGN KEY (propriedade_id) REFERENCES propriedades(id)
 );
 
 CREATE TABLE arquivos (
