@@ -1,48 +1,80 @@
 <!doctype html>
-<html>
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="styesheet" href="main.html">
   </head>
-  <body class="bg-gray-200 flex flex-col">
-    <div class=" bg-blue-800 w-full h-24 flex justify-between shadow-lg">
-      <span class="text-4xl text-white font-mono font-bold pl-4 pt-6 uppercase">gerenciador de imóveis</span>
-      <div class="flex flex-col pt-8 pr-10">
-        <a href="login.html" class="text-white text-xl font-mono font-bold hover:text-slate-200">Voltar</a>
-      </div>
-    </div>
+  <body class="min-h-screen flex flex-col">
 
-    <div class="grid grid-cols-2 grid-rows-2 gap-20 text-white justify-self-center pt-20 pl-80">
-      <div>
-        <a href="imovel.html" class=" ">   
-          <img src="images/vector1.jpg" class="w-90 h-65 rounded-lg hover:grayscale-20">
-          <span class="text-white bg-blue-800 rounded-lg pl-1 pr-1 font-mono font-bold text-lg">Imóvel 1</span>
+    <header class="top-bar w-full px-8 py-4 flex items-center justify-between sticky top-0 z-50">
+      <div class="flex items-center gap-4">
+        <div class="accent-bar"></div>
+        <span class="text-white text-lg font-black uppercase tracking-widest">Gerenciador de Imóveis</span>
+      </div>
+      <a href="login.html" class="btn-back">← Sair</a>
+    </header>
+
+    <main class="flex-1 px-8 py-12 max-w-5xl mx-auto w-full">
+
+      <div class="mb-10">
+        <p class="section-label mb-2">Portfólio</p>
+        <h1 class="text-white text-5xl font-black uppercase leading-none">Seus<br>imóveis</h1>
+        <div class="mt-4 h-0.5 bg-white w-32"></div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+        <a href="imovel.html" class="prop-card h-72">
+          <img src="images/vector1.jpg" alt="Imóvel 1" class="prop-img">
+          <div class="prop-overlay"></div>
+          <div class="prop-label">
+            <span class="prop-badge">Disponível</span>
+            <p class="text-white text-xl font-black uppercase">Imóvel 1</p>
+            <p class="text-neutral-400 text-xs font-medium mt-0.5">Ver detalhes →</p>
+          </div>
         </a>
-      </div>
 
-      <div>
-        <a href="imovel.html" class="">   
-          <img src="images/vector2.jpg" class="w-90 h-65 rounded-lg hover:grayscale-20">
-          <span class="text-white bg-blue-800 rounded-lg pl-1 pr-1 font-mono font-bold text-lg">Imóvel 2</span>
-        </a> 
-      </div>
-
-      <div>
-        <a href="imovel.html" class="">   
-          <img src="vector3.jpg" class="w-90 h-65 rounded-lg hover:grayscale-20">
-          <span class="text-white bg-blue-800 rounded-lg pl-1 pr-1 font-mono font-bold text-lg">Imóvel 3</span>
+        <a href="imovel.html" class="prop-card h-72">
+          <img src="images/vector2.jpg" alt="Imóvel 2" class="prop-img">
+          <div class="prop-overlay"></div>
+          <div class="prop-label">
+            <span class="prop-badge">Disponível</span>
+            <p class="text-white text-xl font-black uppercase">Imóvel 2</p>
+            <p class="text-neutral-400 text-xs font-medium mt-0.5">Ver detalhes →</p>
+          </div>
         </a>
-      </div>
 
-      <div>
-        <a href="imovel.html" class="">   
-          <img src="vector4.jpg" class="w-90 h-65 rounded-lg hover:grayscale-20">
-          <span class="text-white bg-blue-800 rounded-lg pl-1 pr-1 font-mono font-bold text-lg">Imóvel 4</span>
+        <a href="imovel.html" class="prop-card h-72">
+          <img src="vector3.jpg" alt="Imóvel 3" class="prop-img">
+          <div class="prop-overlay"></div>
+          <div class="prop-label">
+            <span class="prop-badge">Disponível</span>
+            <p class="text-white text-xl font-black uppercase">Imóvel 3</p>
+            <p class="text-neutral-400 text-xs font-medium mt-0.5">Ver detalhes →</p>
+          </div>
         </a>
+
+        <a href="imovel.html" class="prop-card h-72">
+          <img src="vector4.jpg" alt="Imóvel 4" class="prop-img">
+          <div class="prop-overlay"></div>
+          <div class="prop-label">
+            <span class="prop-badge">Disponível</span>
+            <p class="text-white text-xl font-black uppercase">Imóvel 4</p>
+            <p class="text-neutral-400 text-xs font-medium mt-0.5">Ver detalhes →</p>
+          </div>
+        </a>
+
       </div>
-    </div>
-  <script src="utils.js"></script>
-  <script src="main.js"></script>
+    </main>
+
+    <footer class="py-4 text-center text-xs text-neutral-700 border-t border-neutral-900">
+      © 2025 · Gerenciador de Imóveis
+    </footer>
+
+    <script src="utils.js"></script>
+    <script src="main.js"></script>
   </body>
 </html>

@@ -1,36 +1,50 @@
 <!doctype html>
-<html>
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="styesheet" href="login.html">
   </head>
-  <body class="bg-gray-200 flex flex-col items-center">
-    <!-- Cabeçalho da página -->
-    <div class="bg-blue-800 w-full h-24 flex justify-between shadow-lg">
-      <span class="text-4xl text-white font-mono font-bold pl-4 pt-6 uppercase">gerenciador de imóveis</span>
-    </div>
+  <body class="min-h-screen flex flex-col">
 
-    <!-- Quadro principal -->
-    <div class="flex bg-blue-800 w-140 h-120 mt-20 rounded-lg flex-col justify-center">
+    <header class="w-full px-8 py-5 flex items-center gap-4 border-b border-neutral-900">
+      <div class="accent-bar"></div>
+      <span class="text-white text-lg font-black uppercase tracking-widest">Gerenciador de Imóveis</span>
+    </header>
 
-      <div class="text-4xl text-white font-mono font-bold uppercase pl-29 pb-15 ">Entre no sistema!</div>
-      <div class="flex justify-center ">
-        <form action="" method="POST">
-          <label for="nome" class="text-2xl text-white font-mono font-bold uppercase">Usuário</label>
-          <br> 
-          <input type="text" name="usuario" class="text-2xl text-white font-mono font-bold uppercase bg-blue-900 rounded-md text-align-center hover:contrast-80">
-          <br>
-          <label for="nome" class="text-2xl text-white font-mono font-bold uppercase">Senha</label>
-          <br>
-          <input type="password" name="senha" class="text-2xl text-white font-mono font-bold uppercase bg-blue-900 rounded-md hover:contrast-80">          
-          <br><br>
-          <button type="submit" class="text-2xl text-white font-mono font-bold uppercase bg-blue-900 rounded-md ml-5 pl-20 pr-20 hover:contrast-80">Entrar</button>
+    <main class="flex-1 flex items-center justify-center px-4 py-16">
+      <div class="card w-full max-w-sm p-10">
+
+        <div class="mb-8 ani d1">
+          <p class="text-yellow-400 text-xs font-bold uppercase tracking-widest mb-3">Acesso ao sistema</p>
+          <h1 class="text-white text-4xl font-black uppercase leading-none">Entre<br>agora.</h1>
+          <div class="mt-5 h-px bg-white/20"></div>
+        </div>
+
+        <form action="" method="POST" class="flex flex-col gap-5">
+          <div class="ani d2">
+            <label>Usuário</label>
+            <input type="text" name="usuario" placeholder="seu.usuario" class="input-field w-full px-4 py-3">
+          </div>
+          <div class="ani d3">
+            <label>Senha</label>
+            <input type="password" name="senha" placeholder="••••••••" class="input-field w-full px-4 py-3">
+          </div>
+          <div class="ani d4 pt-2">
+            <button type="submit" class="btn-primary w-full py-4 text-sm">Entrar →</button>
+          </div>
         </form>
-      </div>
-    </div>
 
-  <script src="utils.js"></script>
-  <script src="login.js"></script>
+      </div>
+    </main>
+
+    <footer class="py-4 text-center text-xs text-neutral-700 border-t border-neutral-900">
+      © 2025 · Gerenciador de Imóveis
+    </footer>
+
+    <script src="utils.js"></script>
+    <script src="login.js"></script>
   </body>
 </html>

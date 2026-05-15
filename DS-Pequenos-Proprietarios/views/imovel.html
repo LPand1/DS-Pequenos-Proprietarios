@@ -1,53 +1,92 @@
 <!doctype html>
-<html>
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="styesheet" href="imovel.css">
   </head>
-  <body class="bg-gray-200 flex flex-col">
-    <!-- Cabeçalho -->
-    <div class=" bg-blue-800 w-full h-24 flex justify-between shadow-lg">
-      <span class="text-4xl text-white font-mono font-bold pl-4 pt-6 uppercase">gerenciador de imóveis</span>
-      <div class="flex flex-col pt-8 pr-10">
-        <a href="main.html" class="text-white text-xl font-mono font-bold hover:text-slate-200">Voltar</a>
-      </div>
-    </div>
-    <!-- Parte Principal -->
-    <div class="flex pt-20 pl-30 flex-row">
-      <!-- Informações do imóvel -->
-        <div class="pr-90">
-            <span class="text-4xl bg-blue-800 rounded-lg pl-1 pr-1 text-white font-mono font-bold uppercase">Nome do imóvel</span>
-            <img src="vector1.jpg" class="w-130 h-100 rounded-lg">
-        </div>
-        <!-- Tabela -->
-        <div>
-            <table class="bg-blue-600">
-                <tr class="bg-blue-800">
-                  <th class="text-white font-mono font-bold">Inquilino</th>
-                  <th class="text-white font-mono font-bold">Data</th>
-                  <th class="text-white font-mono font-bold">O que foi feito?</th>
-                </tr>
-                <tr class="h-40">
-                  <td class="text-white font-mono font-bold border border-white"><textarea class="resize-y h-40"></textarea></td>
-                  <td class="text-white font-mono font-bold border border-white"><input type="date"></td>
-                  <td class="text-white font-mono font-bold border border-white"><textarea class="resize-y h-40"></textarea></td>
-                </tr>
-                <tr class="h-40">
-                  <td class="text-white font-mono font-bold border border-white"><textarea class="resize-y h-40"></textarea></td>
-                  <td class="text-white font-mono font-bold border border-white"><input type="date"></td>
-                  <td class="text-white font-mono font-bold border border-white"><textarea class="resize-y h-40"></textarea></td>
-                </tr>
-                <tr class="h-40">
-                  <td class="text-white font-mono font-bold border border-white"><textarea class="resize-y h-40"></textarea></td>
-                  <td class="text-white font-mono font-bold border border-white"><input type="date"></td>
-                  <td class="text-white font-mono font-bold border border-white"><textarea class="resize-y h-40"></textarea></td>
-                </tr>
-            </table>
+  <body class="min-h-screen flex flex-col">
 
+    <header class="top-bar w-full px-8 py-4 flex items-center justify-between sticky top-0 z-50">
+      <div class="flex items-center gap-4">
+        <div class="accent-bar"></div>
+        <span class="text-white text-lg font-black uppercase tracking-widest">Gerenciador de Imóveis</span>
+      </div>
+      <a href="main.html" class="btn-back">← Voltar</a>
+    </header>
+
+    <main class="flex-1 px-8 py-12 max-w-6xl mx-auto w-full">
+
+      <div class="mb-8 ani d1">
+        <p class="section-label mb-2">Detalhes</p>
+        <h1 class="text-white text-5xl font-black uppercase leading-none">Nome do<br>Imóvel</h1>
+        <div class="mt-4 h-0.5 bg-white w-32"></div>
+      </div>
+
+      <div class="flex flex-col lg:flex-row gap-8">
+
+        <!-- Photo -->
+        <div class="lg:w-2/5 ani d2">
+          <div class="photo-frame" style="height: 340px;">
+            <img src="vector1.jpg" alt="Foto do imóvel">
+            <div class="photo-tag">📍 Endereço</div>
+          </div>
         </div>
-    </div>
-  <script src="utils.js"></script>
-  <script src="imovel.js"></script>
+
+        <!-- Table -->
+        <div class="lg:w-3/5 ani d3">
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <p class="text-black text-sm font-black uppercase tracking-wide">Histórico de Registros</p>
+                <p class="text-neutral-600 text-xs font-medium mt-0.5">Inquilinos · datas · ocorrências</p>
+              </div>
+              <span class="bg-black text-yellow-400 text-xs font-bold uppercase tracking-wider px-3 py-1">3 entradas</span>
+            </div>
+
+            <table class="log-table">
+              <thead>
+                <tr>
+                  <th style="width:44px">#</th>
+                  <th>Inquilino</th>
+                  <th>Data</th>
+                  <th>O que foi feito?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><div class="row-num">1</div></td>
+                  <td><textarea class="cell-input" placeholder="Nome…"></textarea></td>
+                  <td><input type="date" class="cell-date"></td>
+                  <td><textarea class="cell-input" placeholder="Descreva…"></textarea></td>
+                </tr>
+                <tr>
+                  <td><div class="row-num">2</div></td>
+                  <td><textarea class="cell-input" placeholder="Nome…"></textarea></td>
+                  <td><input type="date" class="cell-date"></td>
+                  <td><textarea class="cell-input" placeholder="Descreva…"></textarea></td>
+                </tr>
+                <tr>
+                  <td><div class="row-num">3</div></td>
+                  <td><textarea class="cell-input" placeholder="Nome…"></textarea></td>
+                  <td><input type="date" class="cell-date"></td>
+                  <td><textarea class="cell-input" placeholder="Descreva…"></textarea></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <footer class="py-4 text-center text-xs text-neutral-700 border-t border-neutral-900">
+      © 2025 · Gerenciador de Imóveis
+    </footer>
+
+    <script src="utils.js"></script>
+    <script src="imovel.js"></script>
   </body>
 </html>
