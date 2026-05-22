@@ -18,7 +18,7 @@ Class ArquivoController {
             echo json_encode($dados);
         }*/
 
-        return $this->arquivoDAO->buscarTodos()
+        return $this->arquivoDAO->buscarTodos();
     }
 
     public function buscarId($id) {

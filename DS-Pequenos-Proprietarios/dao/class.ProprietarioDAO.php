@@ -32,7 +32,7 @@ Class ProprietarioDAO {
         $proprietarios = [];
 
         foreach($proprietarios as $p) {
-            $proprietarios[] = $this->mapTask[$d]
+            $proprietarios[] = $this->mapTask[$d];
         }
 
         if (!$proprietarios) { return $null; }
@@ -60,7 +60,7 @@ Class ProprietarioDAO {
 
         return [
             'sucesso' => true,
-        ]
+        ];
     }
 
     public function excluirId($id) {
@@ -69,7 +69,7 @@ Class ProprietarioDAO {
         
         return [
             'sucesso' => true,
-        ]
+        ];
     }
 }
 
