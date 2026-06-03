@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciador de Imóveis</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
@@ -16,7 +17,6 @@
 
       .accent-bar { width: 48px; height: 4px; background: #facc15; }
 
-      /* Property cards */
       .prop-card {
         background: #111;
         border: 2px solid #fff;
@@ -24,6 +24,8 @@
         overflow: hidden;
         transition: all 0.2s ease;
         display: block;
+        cursor: pointer;
+        text-decoration: none;
       }
       .prop-card:hover {
         border-color: #facc15;
@@ -98,9 +100,17 @@
     <header class="top-bar w-full px-8 py-4 flex items-center justify-between sticky top-0 z-50">
       <div class="flex items-center gap-4">
         <div class="accent-bar"></div>
-        <span class="text-white text-lg font-black uppercase tracking-widest">Gerenciador de Imóveis</span>
+        <!--
+          id="header-usuario" → main.js atualiza com "Olá, [nome] — Gerenciador de Imóveis"
+        -->
+        <span id="header-usuario" class="text-white text-lg font-black uppercase tracking-widest">
+          Gerenciador de Imóveis
+        </span>
       </div>
-      <a href="login.html" class="btn-back">← Sair</a>
+      <!--
+        id="btn-sair" → main.js intercepta o clique, limpa Storage e redireciona
+      -->
+      <a href="login.html" id="btn-sair" class="btn-back">← Sair</a>
     </header>
 
     <main class="flex-1 px-8 py-12 max-w-5xl mx-auto w-full">
@@ -111,6 +121,11 @@
         <div class="mt-4 h-0.5 bg-white w-32"></div>
       </div>
 
+      <!--
+        Cada card tem class="prop-card" → main.js itera por index (0-based → id 1-based).
+        class="prop-nome" → main.js sobrescreve com o nome salvo no Storage, se houver.
+        O href é ignorado; main.js usa e.preventDefault() e redireciona após salvar imovelAtivo.
+      -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 
         <a href="imovel.html" class="prop-card h-72">
@@ -118,7 +133,7 @@
           <div class="prop-overlay"></div>
           <div class="prop-label">
             <span class="prop-badge">Disponível</span>
-            <p class="text-white text-xl font-black uppercase">Imóvel 1</p>
+            <p class="prop-nome text-white text-xl font-black uppercase">Imóvel 1</p>
             <p class="text-neutral-400 text-xs font-medium mt-0.5">Ver detalhes →</p>
           </div>
         </a>
@@ -128,27 +143,27 @@
           <div class="prop-overlay"></div>
           <div class="prop-label">
             <span class="prop-badge">Disponível</span>
-            <p class="text-white text-xl font-black uppercase">Imóvel 2</p>
+            <p class="prop-nome text-white text-xl font-black uppercase">Imóvel 2</p>
             <p class="text-neutral-400 text-xs font-medium mt-0.5">Ver detalhes →</p>
           </div>
         </a>
 
         <a href="imovel.html" class="prop-card h-72">
-          <img src="vector3.jpg" alt="Imóvel 3" class="prop-img">
+          <img src="images/vector3.jpg" alt="Imóvel 3" class="prop-img">
           <div class="prop-overlay"></div>
           <div class="prop-label">
             <span class="prop-badge">Disponível</span>
-            <p class="text-white text-xl font-black uppercase">Imóvel 3</p>
+            <p class="prop-nome text-white text-xl font-black uppercase">Imóvel 3</p>
             <p class="text-neutral-400 text-xs font-medium mt-0.5">Ver detalhes →</p>
           </div>
         </a>
 
         <a href="imovel.html" class="prop-card h-72">
-          <img src="vector4.jpg" alt="Imóvel 4" class="prop-img">
+          <img src="images/vector4.jpg" alt="Imóvel 4" class="prop-img">
           <div class="prop-overlay"></div>
           <div class="prop-label">
             <span class="prop-badge">Disponível</span>
-            <p class="text-white text-xl font-black uppercase">Imóvel 4</p>
+            <p class="prop-nome text-white text-xl font-black uppercase">Imóvel 4</p>
             <p class="text-neutral-400 text-xs font-medium mt-0.5">Ver detalhes →</p>
           </div>
         </a>

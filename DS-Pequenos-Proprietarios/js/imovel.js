@@ -4,250 +4,181 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
-  // ── Qual imóvel está ativo? ───────────────────────────────
+  // ── Imóvel ativo ─────────────────────────────────────────
   const imovelAtivo = Storage.get("imovelAtivo") || { id: 1 };
   const STORAGE_KEY = "imovel_" + imovelAtivo.id + "_registros";
 
   // ── Referências DOM ───────────────────────────────────────
-  const nomeImovel = document.querySelector(".text-4xl.bg-blue-800");
-  const tabela = document.querySelector("table");
-  const tbody = tabela.querySelector("tbody") || tabela; // suporte a ambos
+  const nomeEl   = document.getElementById("nome-imovel");
+  const photoTag = document.getElementById("photo-tag");
+  const tbody    = document.getElementById("log-tbody");
+  const btnAdd   = document.getElementById("btn-add-row");
+  const contador = document.getElementById("contador-entradas");
 
-  // ── Atualiza o nome do imóvel no cabeçalho ────────────────
-  if (nomeImovel) {
-    nomeImovel.textContent = "Imóvel " + imovelAtivo.id;
+  // ── Carrega dados salvos ──────────────────────────────────
+  let dados = Storage.get(STORAGE_KEY) || {};
+  let registros = dados.linhas && dados.linhas.length
+    ? dados.linhas
+    : [
+        { oque: "", data: "", descricao: "" },
+        { oque: "", data: "", descricao: "" },
+        { oque: "", data: "", descricao: "" }
+      ];
 
-    // Clique para editar o nome inline
-    nomeImovel.title = "Clique para editar o nome";
-    nomeImovel.style.cursor = "pointer";
-
-    nomeImovel.addEventListener("click", function () {
-      const nomeAtual = nomeImovel.textContent;
-      const input = document.createElement("input");
-
-      Object.assign(input.style, {
-        fontSize: "inherit",
-        fontFamily: "monospace",
-        fontWeight: "bold",
-        background: "#1e3a8a",
-        color: "#fff",
-        border: "2px solid #93c5fd",
-        borderRadius: "6px",
-        padding: "2px 6px",
-        width: "300px"
-      });
-
-      input.value = nomeAtual;
-      nomeImovel.replaceWith(input);
-      input.focus();
-      input.select();
-
-      function salvarNome() {
-        const novoNome = input.value.trim() || nomeAtual;
-        nomeImovel.textContent = novoNome;
-        input.replaceWith(nomeImovel);
-
-        // Persiste o nome customizado
-        const dados = Storage.get(STORAGE_KEY) || {};
-        dados.nome = novoNome;
-        Storage.set(STORAGE_KEY, dados);
-        showToast("Nome salvo!", "success");
-      }
-
-      input.addEventListener("blur", salvarNome);
-      input.addEventListener("keydown", function (e) {
-        if (e.key === "Enter") input.blur();
-        if (e.key === "Escape") {
-          nomeImovel.textContent = nomeAtual;
-          input.replaceWith(nomeImovel);
-        }
-      });
-    });
-
-    // Restaura nome salvo
-    const dadosSalvos = Storage.get(STORAGE_KEY);
-    if (dadosSalvos && dadosSalvos.nome) {
-      nomeImovel.textContent = dadosSalvos.nome;
+  // ── Nome do imóvel ────────────────────────────────────────
+  function setNomeDisplay(nome) {
+    const partes = nome.split(" ");
+    if (partes.length >= 2) {
+      const meio = Math.ceil(partes.length / 2);
+      nomeEl.innerHTML = partes.slice(0, meio).join(" ") + "<br>" + partes.slice(meio).join(" ");
+    } else {
+      nomeEl.textContent = nome;
     }
   }
 
-  // ── Tabela dinâmica ───────────────────────────────────────
+  const nomeInicial = dados.nome || ("Imóvel " + imovelAtivo.id);
+  setNomeDisplay(nomeInicial);
 
-  // Remover as linhas hardcoded do HTML e reconstruir via JS
-  // (mantém compatibilidade com o PHP que vai servir os dados)
-  const linhasExistentes = tabela.querySelectorAll("tr:not(:first-child)");
-  linhasExistentes.forEach(function (tr) { tr.remove(); });
+  if (dados.endereco) photoTag.textContent = "📍 " + dados.endereco;
 
-  // Carrega registros salvos ou cria 3 linhas em branco
-  let registros = (Storage.get(STORAGE_KEY) || {}).linhas || [
-    { inquilino: "", data: "", descricao: "" },
-    { inquilino: "", data: "", descricao: "" },
-    { inquilino: "", data: "", descricao: "" }
-  ];
+  // Edição inline do nome ao clicar
+  nomeEl.addEventListener("click", function () {
+    const nomeAtual = dados.nome || ("Imóvel " + imovelAtivo.id);
 
-  // Renderiza todas as linhas
-  registros.forEach(function (_, i) { adicionarLinha(i); });
+    const input = document.createElement("input");
+    input.id = "nome-imovel-input";
+    input.className = "text-5xl font-black";
+    input.value = nomeAtual;
+    input.style.cssText = "background:transparent; border:none; border-bottom:2px solid #facc15; color:#facc15; font-family:'Roboto',sans-serif; font-size:inherit; font-weight:900; text-transform:uppercase; outline:none; line-height:1; width:100%;";
 
-  // Preenche dados salvos nos campos
-  sincronizarCampos();
+    nomeEl.innerHTML = "";
+    nomeEl.appendChild(input);
+    input.focus();
+    input.select();
 
-  // ── Botão "Adicionar linha" ───────────────────────────────
-  const btnAdicionar = document.createElement("button");
-  btnAdicionar.textContent = "+ Adicionar linha";
-  Object.assign(btnAdicionar.style, {
-    marginTop: "12px",
-    padding: "8px 20px",
-    background: "#1e3a8a",
-    color: "#fff",
-    fontFamily: "monospace",
-    fontWeight: "bold",
-    fontSize: "14px",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer"
-  });
-  btnAdicionar.addEventListener("mouseenter", function () {
-    btnAdicionar.style.background = "#1e40af";
-  });
-  btnAdicionar.addEventListener("mouseleave", function () {
-    btnAdicionar.style.background = "#1e3a8a";
-  });
-  btnAdicionar.addEventListener("click", function () {
-    registros.push({ inquilino: "", data: "", descricao: "" });
-    adicionarLinha(registros.length - 1);
-    salvarTudo();
-    showToast("Linha adicionada!", "info");
+    function salvarNome() {
+      const novoNome = input.value.trim() || nomeAtual;
+      dados = Storage.get(STORAGE_KEY) || {};
+      dados.nome = novoNome;
+      Storage.set(STORAGE_KEY, dados);
+      setNomeDisplay(novoNome);
+      showToast("Nome salvo!", "success");
+    }
+
+    input.addEventListener("blur", salvarNome);
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter")  input.blur();
+      if (e.key === "Escape") setNomeDisplay(nomeAtual);
+    });
   });
 
-  tabela.parentElement.appendChild(btnAdicionar);
+  // ── Renderiza tabela ──────────────────────────────────────
+  function renderTabela() {
+    tbody.innerHTML = "";
+    registros.forEach(function (reg, i) {
+      tbody.appendChild(criarLinha(reg, i));
+    });
+    atualizarContador();
+  }
 
-  // ── Função: cria uma linha na tabela ─────────────────────
-  function adicionarLinha(index) {
+  function criarLinha(reg, index) {
     const tr = document.createElement("tr");
     tr.dataset.index = index;
-    tr.style.height = "120px";
 
-    // Células
-    const cellInquilino = criarCelula("textarea", index, "inquilino");
-    const cellData = criarCelula("date", index, "data");
-    const cellDescricao = criarCelula("textarea", index, "descricao");
+    // Número
+    const tdNum = document.createElement("td");
+    tdNum.innerHTML = '<div class="row-num">' + (index + 1) + '</div>';
 
-    // Célula de ações (remover linha)
-    const cellAcao = document.createElement("td");
-    cellAcao.style.cssText = "border: 1px solid white; padding: 4px; vertical-align: middle; text-align: center;";
+    // O que foi feito
+    const tdOque = document.createElement("td");
+    const taOque = document.createElement("textarea");
+    taOque.className = "cell-input";
+    taOque.placeholder = "Nome…";
+    taOque.maxLength = 200;
+    taOque.dataset.campo = "oque";
+    taOque.value = reg.oque || "";
+    tdOque.appendChild(taOque);
 
-    const btnRemover = document.createElement("button");
-    btnRemover.textContent = "✕";
-    Object.assign(btnRemover.style, {
-      background: "#7f1d1d",
-      color: "#fff",
-      border: "none",
-      borderRadius: "4px",
-      padding: "4px 10px",
-      cursor: "pointer",
-      fontFamily: "monospace",
-      fontWeight: "bold"
-    });
-    btnRemover.title = "Remover linha";
-    btnRemover.addEventListener("click", function () {
-      registros.splice(index, 1);
-      tr.remove();
-      reindexarLinhas();
+    // Data
+    const tdData = document.createElement("td");
+    const inputData = document.createElement("input");
+    inputData.type = "date";
+    inputData.className = "cell-date";
+    inputData.dataset.campo = "data";
+    inputData.value = reg.data || "";
+    tdData.appendChild(inputData);
+
+    // Descrição
+    const tdDesc = document.createElement("td");
+    const taDesc = document.createElement("textarea");
+    taDesc.className = "cell-input";
+    taDesc.placeholder = "Descreva…";
+    taDesc.dataset.campo = "descricao";
+    taDesc.value = reg.descricao || "";
+    tdDesc.appendChild(taDesc);
+
+    // Remover
+    const tdAcao = document.createElement("td");
+    tdAcao.style.cssText = "padding:6px 8px; vertical-align:middle; text-align:center;";
+    const btnRem = document.createElement("button");
+    btnRem.className = "btn-remove-row";
+    btnRem.innerHTML = "✕";
+    btnRem.title = "Remover linha";
+    btnRem.addEventListener("click", function () {
+      const idxAtual = parseInt(tr.dataset.index, 10);
+      registros.splice(idxAtual, 1);
+      renderTabela();
       salvarTudo();
       showToast("Linha removida.", "info");
     });
+    tdAcao.appendChild(btnRem);
 
-    cellAcao.appendChild(btnRemover);
-    tr.appendChild(cellInquilino);
-    tr.appendChild(cellData);
-    tr.appendChild(cellDescricao);
-    tr.appendChild(cellAcao);
-    tabela.appendChild(tr);
-  }
+    tr.appendChild(tdNum);
+    tr.appendChild(tdOque);
+    tr.appendChild(tdData);
+    tr.appendChild(tdDesc);
+    tr.appendChild(tdAcao);
 
-  // ── Função: cria célula com input ou textarea ─────────────
-  function criarCelula(tipo, index, campo) {
-    const td = document.createElement("td");
-    td.style.cssText = "border: 1px solid white; padding: 4px; vertical-align: top;";
-
-    let el;
-    if (tipo === "textarea") {
-      el = document.createElement("textarea");
-      el.style.cssText = "resize: vertical; min-height: 100px; width: 100%; background: transparent; color: white; font-family: monospace; font-weight: bold; border: none; outline: none; padding: 4px;";
-    } else {
-      el = document.createElement("input");
-      el.type = "date";
-      el.style.cssText = "background: transparent; color: white; font-family: monospace; font-weight: bold; border: none; outline: none; padding: 4px;";
-    }
-
-    el.dataset.index = index;
-    el.dataset.campo = campo;
-
-    // Autosave ao sair do campo
-    el.addEventListener("change", function () { salvarTudo(); });
-    el.addEventListener("blur", function () { salvarTudo(); });
-
-    td.appendChild(el);
-    return td;
-  }
-
-  // ── Função: preenche campos com dados salvos ──────────────
-  function sincronizarCampos() {
-    registros.forEach(function (reg, i) {
-      const linha = tabela.querySelector('tr[data-index="' + i + '"]');
-      if (!linha) return;
-
-      const campos = linha.querySelectorAll("[data-campo]");
-      campos.forEach(function (el) {
-        el.value = reg[el.dataset.campo] || "";
-      });
+    [taOque, inputData, taDesc].forEach(function (el) {
+      el.addEventListener("change", salvarTudo);
+      el.addEventListener("blur",   salvarTudo);
     });
+
+    return tr;
   }
 
-  // ── Função: salva todos os dados no localStorage ──────────
+  // ── Salva tudo no localStorage ────────────────────────────
   function salvarTudo() {
     const linhas = [];
-    const linhasDOM = tabela.querySelectorAll("tr[data-index]");
-
-    linhasDOM.forEach(function (tr) {
+    tbody.querySelectorAll("tr[data-index]").forEach(function (tr) {
       const reg = {};
       tr.querySelectorAll("[data-campo]").forEach(function (el) {
         reg[el.dataset.campo] = el.value;
       });
       linhas.push(reg);
     });
-
-    const dados = Storage.get(STORAGE_KEY) || {};
+    registros = linhas;
+    dados = Storage.get(STORAGE_KEY) || {};
     dados.linhas = linhas;
     Storage.set(STORAGE_KEY, dados);
   }
 
-  // ── Função: corrige os índices após remoção ───────────────
-  function reindexarLinhas() {
-    const linhasDOM = tabela.querySelectorAll("tr[data-index]");
-    linhasDOM.forEach(function (tr, i) {
-      tr.dataset.index = i;
-      tr.querySelectorAll("[data-index]").forEach(function (el) {
-        el.dataset.index = i;
-      });
-    });
-    registros = [];
-    linhasDOM.forEach(function (tr) {
-      const reg = {};
-      tr.querySelectorAll("[data-campo]").forEach(function (el) {
-        reg[el.dataset.campo] = el.value;
-      });
-      registros.push(reg);
-    });
+  // ── Contador de entradas ──────────────────────────────────
+  function atualizarContador() {
+    const n = registros.length;
+    contador.textContent = n + (n === 1 ? " entrada" : " entradas");
   }
 
-  // ── Adiciona cabeçalho "Ações" na tabela ─────────────────
-  const headerRow = tabela.querySelector("tr:first-child");
-  if (headerRow) {
-    const th = document.createElement("th");
-    th.textContent = "Ações";
-    th.style.cssText = "color: white; font-family: monospace; font-weight: bold; padding: 4px 8px;";
-    headerRow.appendChild(th);
-  }
+  // ── Adicionar linha ───────────────────────────────────────
+  btnAdd.addEventListener("click", function () {
+    registros.push({ oque: "", data: "", descricao: "" });
+    renderTabela();
+    salvarTudo();
+    const ultimaLinha = tbody.lastElementChild;
+    if (ultimaLinha) ultimaLinha.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    showToast("Linha adicionada!", "success");
+  });
 
+  // ── Init ──────────────────────────────────────────────────
+  renderTabela();
 });
