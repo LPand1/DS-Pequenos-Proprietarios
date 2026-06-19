@@ -65,6 +65,36 @@ const Api = {
   delete(path) {
     return this.request(path, { method: 'DELETE' });
   },
+
+  upload(path, formData) {
+    const headers = {};
+    const token = this.getToken();
+    if (token) {
+      headers['Authorization'] = 'Bearer ' + token;
+    }
+
+    return fetch(API_BASE + '/' + path, { method: 'POST', headers, body: formData })
+      .then(async function (res) {
+        let data = {};
+        try {
+          data = await res.json();
+        } catch (_) {}
+
+        if (res.status === 401) {
+          Api.clearToken();
+          if (!window.location.pathname.includes('login.html')) {
+            window.location.href = 'login.html';
+          }
+          throw new Error(data.erro || 'Não autenticado');
+        }
+
+        if (!res.ok) {
+          throw new Error(data.erro || data.detalhe || 'Erro na requisição');
+        }
+
+        return data;
+      });
+  },
 };
 
 function showToast(message, type = 'success') {
@@ -76,9 +106,9 @@ function showToast(message, type = 'success') {
   toast.textContent = message;
 
   const colors = {
-    success: '#1e3a8a',
+    success: '#00D5BE',
     error: '#991b1b',
-    info: '#1e40af',
+    info: '#00ffe5ff',
   };
 
   Object.assign(toast.style, {
@@ -126,4 +156,13 @@ function obterImovelId() {
   const params = new URLSearchParams(window.location.search);
   const id = parseInt(params.get('id'), 10);
   return isNaN(id) ? null : id;
+}
+
+const FOTOS_PADRAO = ['images/vector1.jpg', 'images/vector2.jpg', 'vector3.jpg', 'vector4.jpg'];
+
+function urlFotoImovel(fotoPath, indice) {
+  if (fotoPath) {
+    return '../' + fotoPath;
+  }
+  return FOTOS_PADRAO[indice % FOTOS_PADRAO.length];
 }

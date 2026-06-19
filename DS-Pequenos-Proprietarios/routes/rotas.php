@@ -37,6 +37,7 @@ function exigirJwt(): array {
     } catch (Throwable $e) {
         responder(['erro' => 'Token inválido ou expirado'], 401);
     }
+    return [];
 }
 
 function corpoJson(): array {
@@ -51,33 +52,60 @@ try {
     $caminho = preg_replace('#^/index\.php#', '', $caminho);
     $partes  = explode('/', trim($caminho, '/'));
 
-    $recurso = $partes[0] ?? '';
-    $idBruto = $partes[1] ?? null;
+    // Ex: /arquivos/42/download  → $partes = ['arquivos', '42', 'download']
+    // Ex: /arquivos/upload       → $partes = ['arquivos', 'upload']
+    $recurso    = $partes[0] ?? '';
+    $parte1     = $partes[1] ?? '';   // pode ser um ID numérico ou palavra-chave
+    $subRecurso = $partes[2] ?? '';   // 'download', 'foto', etc.
 
-    $id = ($idBruto !== null && $idBruto !== '')
-        ? filter_var($idBruto, FILTER_VALIDATE_INT)
+    // Parse do ID somente se $parte1 for numérico
+    $id = ($parte1 !== '' && ctype_digit($parte1))
+        ? (int) $parte1
         : null;
-    if ($id === false) {
-        $id = null;
-    }
 
+    // ── Rotas públicas ─────────────────────────────────────────────────────────
     if ($recurso === 'login' && $metodo === 'POST') {
         (new AuthController())->login();
         exit;
     }
-
     if ($recurso === 'cadastro' && $metodo === 'POST') {
         (new AuthController())->cadastro();
         exit;
     }
-
     if ($recurso === '') {
         responder(['erro' => 'Recurso não especificado na URI'], 400);
     }
 
-    $jwt = exigirJwt();
+    // ── Todas as demais rotas exigem JWT ───────────────────────────────────────
+    $jwt       = exigirJwt();
     $usuarioId = (int) ($jwt['sub'] ?? 0);
 
+    // ── POST /propriedades/{id}/foto ───────────────────────────────────────────
+    if ($recurso === 'propriedades' && $id !== null && $subRecurso === 'foto' && $metodo === 'POST') {
+        $resultado = (new PropriedadeController())->uploadFoto($id, $usuarioId);
+        if (is_array($resultado) && isset($resultado['erro'])) {
+            responder($resultado, 400);
+        }
+        responder($resultado ?? ['sucesso' => true]);
+    }
+
+    // ── POST /arquivos/upload ──────────────────────────────────────────────────
+    if ($recurso === 'arquivos' && $parte1 === 'upload' && $metodo === 'POST') {
+        $resultado = (new ArquivoController())->uploadPdf();
+        if (is_array($resultado) && isset($resultado['erro'])) {
+            responder($resultado, 400);
+        }
+        responder($resultado, 201);
+    }
+
+    // ── GET /arquivos/{id}/download ────────────────────────────────────────────
+    // Serve o binário PDF — deve ficar antes do switch genérico
+    if ($recurso === 'arquivos' && $id !== null && $subRecurso === 'download' && $metodo === 'GET') {
+        (new ArquivoController())->download($id);
+        // download() chama exit() internamente
+    }
+
+    // ── Roteamento genérico ────────────────────────────────────────────────────
     $mapa = [
         'usuarios'      => UsuarioController::class,
         'proprietarios' => ProprietarioController::class,
@@ -92,7 +120,6 @@ try {
     }
 
     $classe = $mapa[$recurso];
-
     if (!class_exists($classe)) {
         error_log("[ROUTES ERROR] Classe {$classe} não encontrada para o recurso '{$recurso}'");
         responder(['erro' => "Controller '{$classe}' não encontrado"], 500);
@@ -127,7 +154,7 @@ try {
                 'proprietarios' => $controller->inserir($body['nome'] ?? '', (int) ($body['usuarioId'] ?? 0)),
                 'inquilinos'    => $controller->inserir($body['nome'] ?? '', $body['email'] ?? '', (int) ($body['usuarioId'] ?? 0)),
                 'propriedades'  => $controller->inserirParaProprietario($usuarioId, $body),
-                'gastos' => $controller->inserir(
+                'gastos'        => $controller->inserir(
                     (float) ($body['valor'] ?? 0),
                     $body['data'] ?? '',
                     (float) ($body['total'] ?? 0),
@@ -135,7 +162,11 @@ try {
                     $body['descricao'] ?? '',
                     $body['inquilino'] ?? ''
                 ),
-                'arquivos' => $controller->inserir($body['nome'] ?? '', $body['path'] ?? '', (int) ($body['propriedadeId'] ?? 0)),
+                'arquivos' => $controller->inserir(
+                    $body['nome'] ?? '',
+                    $body['path'] ?? '',
+                    (int) ($body['propriedadeId'] ?? 0)
+                ),
                 default => null,
             };
             if (is_array($resultado) && isset($resultado['erro'])) {

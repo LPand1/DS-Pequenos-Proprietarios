@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   if (!exigirAuth()) return;
 
   const usuario = Api.getUsuario();
-  const header = document.querySelector('.bg-blue-800 span');
+  const header = document.querySelector('.bg-teal-400 span');
   const grid = document.querySelector('.grid');
 
   if (header && usuario) {
@@ -35,17 +35,17 @@ document.addEventListener('DOMContentLoaded', async function () {
       return;
     }
 
-    const imagens = ['images/vector1.jpg', 'images/vector2.jpg', 'vector3.jpg', 'vector4.jpg'];
+    const imagens = FOTOS_PADRAO;
 
     propriedades.forEach(function (prop, index) {
       const div = document.createElement('div');
-      const imgSrc = imagens[index % imagens.length];
+      const imgSrc = urlFotoImovel(prop.fotoPath, index);
       const nome = prop.descricao || prop.endereco || 'Imóvel ' + prop.id;
 
       div.innerHTML =
         '<a href="imovel.html?id=' + prop.id + '" class="block">' +
-        '<img src="' + imgSrc + '" class="w-90 h-65 rounded-lg hover:grayscale-20" alt="' + nome + '">' +
-        '<span class="text-white bg-blue-800 rounded-lg pl-1 pr-1 font-mono font-bold text-lg">' + nome + '</span>' +
+        '<img src="' + imgSrc + '" class="w-90 h-65 rounded-lg border border-teal-400 hover:border-teal-500 hover:grayscale-20" alt="' + nome + '">' +
+        '<span class="text-white bg-teal-400 rounded-lg pl-1 pr-1 font-mono font-bold text-lg">' + nome + '</span>' +
         '</a>';
 
       const link = div.querySelector('a');

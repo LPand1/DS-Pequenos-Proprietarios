@@ -42,6 +42,7 @@ CREATE TABLE propriedades (
     tipo INT NOT NULL,
     descricao VARCHAR(255) NOT NULL,
     aluguel FLOAT NOT NULL,
+    foto_path VARCHAR(255) NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (proprietario_id) REFERENCES proprietarios(id),
     FOREIGN KEY (inquilino_id) REFERENCES inquilinos(id)

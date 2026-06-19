@@ -15,6 +15,9 @@ class PropriedadeDAO {
         $propriedade->setTipo($dados['tipo']);
         $propriedade->setDescricao($dados['descricao']);
         $propriedade->setAluguel($dados['aluguel']);
+        if (array_key_exists('foto_path', $dados)) {
+            $propriedade->setFotoPath($dados['foto_path']);
+        }
         if (isset($dados['inquilino_nome'])) {
             $propriedade->setInquilinoNome($dados['inquilino_nome']);
         }
@@ -91,6 +94,12 @@ class PropriedadeDAO {
             ':descricao' => $dados['descricao'] ?? $atual->getDescricao(),
             ':aluguel' => $dados['aluguel'] ?? $atual->getAluguel(),
         ]);
+        return $this->buscarComInquilino($id);
+    }
+
+    public function atualizarFotoPath(int $id, ?string $fotoPath): ?Propriedade {
+        $sql = $this->pdo->prepare("UPDATE propriedades SET foto_path = :fotoPath WHERE id = :id");
+        $sql->execute([':id' => $id, ':fotoPath' => $fotoPath]);
         return $this->buscarComInquilino($id);
     }
 

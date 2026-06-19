@@ -5,40 +5,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   </head>
-  <body class="bg-gray-200 flex flex-col">
-    <div class="bg-blue-800 w-full h-24 flex justify-between shadow-lg">
-      <span class="text-4xl text-white font-mono font-bold pl-4 pt-6 uppercase">gerenciador de imóveis</span>
+  <body class="bg-black flex flex-col">
+    <div class="bg-teal-400 w-full h-24 flex justify-between shadow-lg">
+      <span class="text-4xl font-mono font-bold pl-4 pt-6 uppercase">gerenciador de imóveis</span>
       <div class="flex gap-4 pt-8 pr-10 items-center">
-        <a href="main.html" class="text-white text-lg font-mono font-bold hover:text-slate-200">Início</a>
-        <a href="propriedades.html" class="text-white text-lg font-mono font-bold hover:text-slate-200">Propriedades</a>
-        <a href="login.html" data-action="sair" class="text-white text-lg font-mono font-bold hover:text-slate-200">Sair</a>
+        <a href="main.html" class="text-lg font-mono font-bold hover:text-slate-200">Início</a>
+        <a href="propriedades.html" class="text-lg font-mono font-bold hover:text-slate-200">Propriedades</a>
+        <a href="login.html" data-action="sair" class="text-lg font-mono font-bold hover:text-slate-200">Sair</a>
       </div>
     </div>
 
     <div class="flex pt-10 px-10 flex-col lg:flex-row gap-10">
+      <!-- Coluna esquerda -->
       <div class="lg:w-1/3">
-        <span class="text-4xl bg-blue-800 rounded-lg px-2 text-white font-mono font-bold uppercase">Nome do imóvel</span>
-        <p id="info-inquilino" class="text-blue-900 font-mono font-bold mt-3"></p>
-        <img src="vector1.jpg" class="w-full max-w-md h-80 object-cover rounded-lg mt-4">
+        <span class="text-4xl bg-teal-400 rounded-lg px-2 font-mono font-bold uppercase">Nome do imóvel</span>
+        <p id="info-inquilino" class="text-teal-500 font-mono font-bold mt-3"></p>
 
-        <div class="mt-8 bg-blue-800 p-5 rounded-lg">
-          <h2 class="text-2xl text-white font-mono font-bold mb-4 uppercase">Arquivos</h2>
-          <form id="form-arquivo" class="flex flex-col gap-3 mb-4">
-            <input name="nome" type="text" placeholder="Nome do arquivo" class="bg-blue-900 text-white font-mono px-3 py-2 rounded">
-            <input name="path" type="text" placeholder="Caminho (ex: /docs/contrato.pdf)" class="bg-blue-900 text-white font-mono px-3 py-2 rounded">
-            <button type="submit" class="bg-blue-900 text-white font-mono font-bold py-2 rounded hover:bg-blue-950">Adicionar arquivo</button>
+        <!-- Foto do imóvel -->
+        <div class="mt-4">
+          <img id="foto-imovel" src="images/vector1.jpg" alt="Foto do imóvel" class="w-full max-w-md h-80 object-cover rounded-lg">
+          <label id="label-foto" class="mt-3 inline-block bg-teal-500 font-mono font-bold px-4 py-2 rounded cursor-pointer hover:bg-teal-600">
+            Alterar foto
+            <input type="file" id="input-foto" accept="image/jpeg,image/png,image/webp" class="hidden">
+          </label>
+        </div>
+
+        <!-- Seção de Arquivos PDF -->
+        <div class="mt-8 bg-teal-400 p-5 rounded-lg">
+          <h2 class="text-2xl font-mono font-bold mb-4 uppercase">Arquivos PDF</h2>
+
+          <!-- Formulário de upload de PDF -->
+          <form id="form-arquivo" class="flex flex-col gap-3 mb-5">
+            <!-- Nome do arquivo -->
+            <div>
+              <label class="block font-mono font-bold text-sm mb-1">Nome do arquivo</label>
+              <input
+                name="nome"
+                type="text"
+                placeholder="Ex: Contrato de locação"
+                class="bg-teal-500 font-mono px-3 py-2 rounded w-full placeholder-teal-200"
+              >
+            </div>
+
+            <!-- Seleção do PDF -->
+            <div>
+              <label class="block font-mono font-bold text-sm mb-1">Selecionar PDF <span class="font-normal opacity-75">(máx. 20 MB)</span></label>
+              <label class="flex items-center gap-3 bg-teal-500 px-3 py-2 rounded cursor-pointer hover:bg-teal-600 transition-colors">
+                <span class="text-xl">📎</span>
+                <span id="label-pdf-texto" class="font-mono text-sm truncate flex-1">Clique para selecionar…</span>
+                <input
+                  type="file"
+                  name="pdf"
+                  id="input-pdf"
+                  accept="application/pdf,.pdf"
+                  class="hidden"
+                >
+              </label>
+            </div>
+
+            <!-- Barra de progresso (oculta por padrão) -->
+            <div id="progresso-upload" class="hidden">
+              <div class="bg-teal-600 rounded-full h-2 overflow-hidden">
+                <div id="barra-progresso" class="bg-white h-2 rounded-full transition-all duration-300" style="width:0%"></div>
+              </div>
+              <p id="texto-progresso" class="font-mono text-xs mt-1 opacity-80">Enviando…</p>
+            </div>
+
+            <button
+              type="submit"
+              id="btn-upload-pdf"
+              class="bg-teal-600 font-mono font-bold py-2 rounded hover:bg-teal-700 transition-colors flex items-center justify-center gap-2"
+            >
+              <span>⬆</span> Adicionar PDF
+            </button>
           </form>
-          <ul id="lista-arquivos" class="space-y-2"></ul>
+
+          <!-- Lista de arquivos -->
+          <ul id="lista-arquivos" class="space-y-3"></ul>
         </div>
       </div>
 
+      <!-- Coluna direita: tabela de gastos -->
       <div class="flex-1">
-        <h2 class="text-2xl text-blue-900 font-mono font-bold mb-4 uppercase">Registros</h2>
-        <table id="tabela-gastos" class="bg-blue-600 w-full">
-          <tr class="bg-blue-800">
-            <th class="text-white font-mono font-bold px-2 py-2">Inquilino</th>
-            <th class="text-white font-mono font-bold px-2 py-2">Data</th>
-            <th class="text-white font-mono font-bold px-2 py-2">O que foi feito?</th>
+        <h2 class="text-2xl text-teal-400 font-mono font-bold mb-4 uppercase">Registros</h2>
+        <table id="tabela-gastos" class="bg-teal-500 w-full">
+          <tr class="bg-teal-500">
+            <th class="font-mono font-bold px-2 py-2">Inquilino</th>
+            <th class="font-mono font-bold px-2 py-2">Data</th>
+            <th class="font-mono font-bold px-2 py-2">O que foi feito?</th>
           </tr>
         </table>
       </div>
@@ -46,5 +100,20 @@
 
     <script src="../js/utils.js"></script>
     <script src="../js/imovel.js"></script>
+
+    <!-- Atualiza o label do input PDF com o nome do arquivo selecionado -->
+    <script>
+      document.getElementById('input-pdf')?.addEventListener('change', function () {
+        const labelTexto = document.getElementById('label-pdf-texto');
+        if (this.files[0]) {
+          const nome = this.files[0].name;
+          const tamanho = (this.files[0].size / 1024 / 1024).toFixed(2);
+          labelTexto.textContent = nome + ' (' + tamanho + ' MB)';
+          labelTexto.style.color = '';
+        } else {
+          labelTexto.textContent = 'Clique para selecionar…';
+        }
+      });
+    </script>
   </body>
 </html>

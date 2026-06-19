@@ -7,6 +7,7 @@ Class Propriedade implements JsonSerializable {
     private $tipo;
     private $descricao;
     private $aluguel;
+    private $fotoPath;
     private $inquilinoNome;
 
     public function setId($id) { $this->id = $id; }
@@ -23,6 +24,8 @@ Class Propriedade implements JsonSerializable {
     public function getDescricao() { return $this->descricao; }
     public function setAluguel($a) { $this->aluguel = $a; }
     public function getAluguel() { return $this->aluguel; }
+    public function setFotoPath($f) { $this->fotoPath = $f; }
+    public function getFotoPath() { return $this->fotoPath; }
     public function setInquilinoNome($n) { $this->inquilinoNome = $n; }
     public function getInquilinoNome() { return $this->inquilinoNome; }
 
@@ -36,6 +39,7 @@ Class Propriedade implements JsonSerializable {
             'tipo' => $this->tipo,
             'descricao' => $this->descricao,
             'aluguel' => $this->aluguel,
+            'fotoPath' => $this->fotoPath,
         ];
     }
 }
