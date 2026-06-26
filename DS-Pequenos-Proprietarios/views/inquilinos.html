@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body class="bg-black flex flex-col min-h-screen">
+    <div class="bg-teal-400 w-full h-24 flex justify-between shadow-lg">
+      <span class="text-4xl text-white font-mono font-bold pl-4 pt-6 uppercase">gerenciador de imóveis</span>
+      <div class="flex gap-6 pt-8 pr-10">
+        <a href="main.html" class="text-white text-xl font-mono font-bold hover:text-slate-200">Início</a>
+        <a href="propriedades.html" class="text-white text-xl font-mono font-bold hover:text-slate-200">Propriedades</a>
+        <a href="#" data-action="sair" class="text-white text-xl font-mono font-bold hover:text-slate-200">Sair</a>
+      </div>
+    </div>
+
+    <div class="p-10 max-w-4xl mx-auto w-full">
+      <h1 class="text-3xl text-teal-500 font-mono font-bold mb-2 uppercase">Inquilinos cadastrados</h1>
+      <p class="text-teal-500 font-mono mb-6">Inquilinos se cadastram na tela de login. Use o nome exato ao vincular um imóvel.</p>
+
+      <table id="tabela-inquilinos" class="w-full bg-teal-400">
+        <thead>
+          <tr class="bg-teal-500">
+            <th class="text-white font-mono font-bold px-3 py-2">Nome</th>
+            <th class="text-white font-mono font-bold px-3 py-2">E-mail</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <script src="../js/utils.js"></script>
+    <script src="../js/crud.js"></script>
+    <script src="../js/inquilinos.js"></script>
+  </body>
+</html>
