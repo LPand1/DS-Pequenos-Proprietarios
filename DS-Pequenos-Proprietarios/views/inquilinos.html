@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inquilinos — Gerenciador de Imóveis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      :root {
+        --bg:       #0A0A0A;
+        --surface:  #111111;
+        --surface2: #1A1A1A;
+        --border:   #2A2A2A;
+        --teal:     #0D9488;
+        --teal-lt:  #2DD4BF;
+        --text:     #F0F0F0;
+        --muted:    #6B7280;
+        --radius:   10px;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Inter', sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      header {
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 2rem;
+        border-bottom: 1px solid var(--border);
+        background: var(--surface);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+      .logo {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 700;
+        font-size: 0.85rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--teal-lt);
+      }
+      nav { display: flex; gap: 1.5rem; align-items: center; }
+      nav a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: color 0.15s;
+      }
+      nav a:hover { color: var(--text); }
+      nav a.danger:hover { color: #EF4444; }
+
+      main { flex: 1; padding: 2.5rem 2rem; max-width: 800px; margin: 0 auto; width: 100%; }
+      .page-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+      .page-sub { font-size: 0.85rem; color: var(--muted); margin-bottom: 2rem; }
+
+      .table-wrap {
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+      table { width: 100%; border-collapse: collapse; background: var(--surface); }
+      thead tr { background: var(--surface2); border-bottom: 1px solid var(--border); }
+      th {
+        padding: 0.75rem 1rem;
+        text-align: left;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+      tbody tr:last-child { border-bottom: none; }
+      tbody tr:hover { background: var(--surface2); }
+      td { padding: 0.85rem 1rem; font-size: 0.875rem; color: var(--text); }
+
+      .hidden { display: none !important; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <span class="logo">Gerenciador de Imóveis</span>
+      <nav>
+        <a href="main.html">Início</a>
+        <a href="propriedades.html">Propriedades</a>
+        <a href="#" data-action="sair" class="danger">Sair</a>
+      </nav>
+    </header>
+
+    <main>
+      <div class="page-title">Inquilinos cadastrados</div>
+      <div class="page-sub">Inquilinos se cadastram na tela de login. Use o nome exato ao vincular um imóvel.</div>
+
+      <div class="table-wrap">
+        <table id="tabela-inquilinos">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>E-mail</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </main>
+
+    <script src="../js/utils.js"></script>
+    <script src="../js/crud.js"></script>
+    <script src="../js/inquilinos.js"></script>
+  </body>
+</html>
