@@ -1,1 +1,0 @@
-ALTER TABLE propriedades ADD COLUMN foto_path VARCHAR(255) NULL;
